@@ -1,0 +1,14 @@
+{% extends 'base.jinja2' %}
+
+{% block content %}
+    <div class="article-head">
+        <h2>{{ meta['Title'] }}</h2>
+        <div class="meta">
+{#            <div class="meta-author">{{ meta['Author'] }}</div>#}
+            <div class="meta-date">{{ meta['Date'] }}</div>
+        </div>
+    </div>
+    <section class="article-content">
+        {{ content }}
+    </section>
+{% endblock %}

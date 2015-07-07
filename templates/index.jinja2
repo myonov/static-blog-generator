@@ -1,0 +1,19 @@
+{% extends 'base.jinja2' %}
+
+{% block content %}
+    <div class="index">
+        {% if articles|length == 0 %}
+            <h2 class="centered">Все още няма статии</h2>
+        {% endif %}
+        <ul>
+        {% for article in articles %}
+            <li>
+                <a href="articles/{{ article.meta['Url'] }}.html">
+                    <div class="title">{{ article.meta['Title'] }}</div>
+                    <time>{{ article.meta['Date'] }}</time>
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
