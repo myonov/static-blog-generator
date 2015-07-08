@@ -97,12 +97,13 @@ pre code {
     line-height: 1.8rem;
     border: 1px solid #e4e4e4;
     word-spacing: normal;
-    margin-bottom: 20px;
+    margin: 0 2rem 20px 2rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-family: "Play";
     font-weight: 700;
+    text-indent: 2rem;
 }
 
 h1 {
@@ -155,6 +156,7 @@ strong {
     font-style: italic;
     margin-top: -20px;
     margin-bottom: 30px;
+    text-indent: 2rem;
 }
 
 .img {
@@ -181,6 +183,7 @@ strong {
 .article-content ol,
 .article-content ul {
     padding-left: 2rem;
+    margin-bottom: 10px;
 }
 
 .article-content ul {
@@ -241,8 +244,26 @@ strong {
 }
 
 @media screen and (max-width: 800px) {
+    .nav-main {
+        float: none;
+    }
+
+    .nav-main li {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .nav-main li:last-child {
+        margin-bottom: 0;
+    }
+
+    .nav a {
+        padding-bottom: 0;
+    }
+
     .container {
         width: 100%;
+        padding: 10px;
     }
 
     .row {

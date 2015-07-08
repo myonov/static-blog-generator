@@ -43,6 +43,9 @@ class Page(object):
         else:
             page = self.__class__.TEMPLATE
 
+        if hasattr(settings, 'BLOG_TITLE'):
+            self.env['title'] = self.env.get('title', '') + ' - ' + settings.BLOG_TITLE
+
         print('Render page {0}'.format(page))
         return self.template.render(self.env)
 

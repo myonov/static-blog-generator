@@ -19,3 +19,4 @@ TEMPLATE = {
     'article_dir': '/' + ARTICLE_DIR.relative_path + '/',
 }
 
+BLOG_TITLE = u'Блог'
