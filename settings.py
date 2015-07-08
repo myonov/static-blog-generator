@@ -19,4 +19,11 @@ TEMPLATE = {
     'article_dir': '/' + ARTICLE_DIR.relative_path + '/',
 }
 
+# This is list of the obligatory meta fields of articles
+META_TAGS = [
+    'Date',
+    'Title',
+    'Url',
+]
+
 BLOG_TITLE = u'Блог'

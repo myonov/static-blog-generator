@@ -101,14 +101,15 @@ class Article(Page):
                 if meta_status == 'ended':
                     content += line
 
-        if 'Date' not in meta:
-            raise ArticleException('Article {0} has not `Date` meta tag'.format(article_path))
+        for tag in settings.META_TAGS:
+            if tag not in meta:
+                raise ArticleException('Article {0} has not `{1}` meta tag'.format(article_path, tag))
 
         try:
             meta['_time'] = time.strptime(meta['Date'], '%H:%M %d.%m.%Y')
             meta['Date'] = meta['Date'].split()[1]
         except:
-            raise ArticleException('Article {0} has invalid `Date` meta tag'.format(article_path))
+            meta['_time'] = time.gmtime(time.time())
 
         content = markdown.markdown(
             content,
