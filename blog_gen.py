@@ -7,6 +7,7 @@ import os
 import shutil
 import time
 
+from feedgen.feed import FeedGenerator
 from jinja2 import Environment, PackageLoader
 import markdown
 
@@ -33,9 +34,9 @@ class Page(object):
     ENVIRONMENT = Environment(loader=PackageLoader('blog_gen'))
     TEMPLATE = None
 
-    def __init__(self, template_settings, **kwargs):
+    def __init__(self, **kwargs):
         self.env = kwargs
-        self.env['template_settings'] = template_settings
+        self.env['template_settings'] = settings.TEMPLATE
 
     def render(self, **kwargs):
         if 'page' in kwargs:
@@ -63,8 +64,8 @@ class Page(object):
 class Article(Page):
     TEMPLATE = 'article.jinja2'
 
-    def __init__(self, template_settings, relative_article_path, **kwargs):
-        super(Article, self).__init__(template_settings, **kwargs)
+    def __init__(self, relative_article_path, **kwargs):
+        super(Article, self).__init__(**kwargs)
         article_path = pjoin(
             settings.ARTICLE_DIR.full_path,
             relative_article_path
@@ -137,7 +138,7 @@ def collect_articles():
     for f in os.listdir(settings.ARTICLE_DIR.full_path):
         file_path = pjoin(settings.ARTICLE_DIR.full_path, f)
         if os.path.isfile(file_path) and f.endswith('.md'):
-            article = Article(settings.TEMPLATE, f)
+            article = Article(f)
             if article.error is None:
                 articles.append(article)
             else:
@@ -186,6 +187,34 @@ def copy_static_folder():
                           settings.STATIC_DIR.relative_path))
 
 
+def article_link(article_url):
+    return settings.HOST + '/articles/' + article_url + '.html'
+
+
+def generate_feed(articles):
+    articles_count = settings.FEED.get('articles_count', 10)
+    author = settings.FEED.get('author', '')
+    language = settings.FEED.get('language', 'en')
+
+    fg = FeedGenerator()
+    fg.title(settings.BLOG_TITLE)
+    fg.author(name=author)
+    fg.id(id=settings.HOST)
+    fg.link(href=settings.HOST, rel='alternate')
+    fg.language(language)
+
+    for i, article in enumerate(articles):
+        if i == articles_count:
+            break
+
+        fe = fg.add_entry()
+        fe.id(article_link(article.meta['Url']))
+        fe.link(href=article_link(article.meta['Url']), rel='alternate')
+        fe.title(article.meta['Title'])
+
+    fg.atom_file(pjoin(settings.OUTPUT_DIR.full_path, 'feed.xml'))
+
+
 def compile_blog():
     create_or_clean_dir(settings.OUTPUT_DIR.full_path)
     copy_static_folder()
@@ -194,8 +223,11 @@ def compile_blog():
 
     output_path = lambda *name: pjoin(settings.OUTPUT_DIR.full_path, *name)
 
-    About(settings.TEMPLATE, title=u'За мен', active='about').save(output_path('about.html'))
-    Index(settings.TEMPLATE, title=u'Съдържание', active='index', articles=articles).save(output_path('index.html'))
+    if settings.FEED is not None and settings.FEED != {}:
+        generate_feed(articles)
+
+    About(title=u'За мен', active='about').save(output_path('about.html'))
+    Index(title=u'Съдържание', active='index', articles=articles).save(output_path('index.html'))
     for a in articles:
         a.save(output_path('articles', a.meta['Url'] + '.html'))
 

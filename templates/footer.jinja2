@@ -1,0 +1,13 @@
+<div class="clearfix">
+    <footer class="footer nav-main">
+        <div class="copyright">
+            &copy;
+            {% if template_settings.year == 2015 %}
+                2015
+            {% else %}
+                2015 &mdash; {{ template_settings.year }}
+            {% endif %}
+        </div>
+        <a href="feed.xml"><img class="atom" src="{{ template_settings.static_url }}atom.svg"></a>
+    </footer>
+</div>

@@ -4,8 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <title>{{ title }}</title>
-    <link href='http://fonts.googleapis.com/css?family=Roboto:700,400|Exo+2:400,700|Play:400,700&subset=latin,cyrillic'
-          rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Tinos:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ template_settings.static_url }}idea.min.css">
     <script src="{{ template_settings.static_url }}highlight.min.js"></script>
     <link href="{{ template_settings.static_url }}reset.css" rel="stylesheet" type="text/css">
@@ -19,6 +18,8 @@
         {% block content %}
         {% endblock %}
     </div>
+
+    {% include 'footer.jinja2' %}
 
     <script>hljs.initHighlightingOnLoad()</script>
 </div>
